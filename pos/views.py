@@ -214,7 +214,8 @@ from template.make_pdf import *
 import os
 
 def GetPDF_POS(request,pk):
-	invoice = POS.objects.filter(pk = pk)
+	company = Company.objects.get(documentIdentification= t.codificar(str(request.session['nit_company'])))
+	invoice = POS.objects.filter(pk = pk,company = company)
 	
 	env = Environment(loader=FileSystemLoader("template"))
 	template = env.get_template("credit_note_sample.html")
@@ -267,10 +268,11 @@ def GetPDF_POS(request,pk):
 	file = open("template/pdfs/"+name_doc+".html",'w')
 	file.write(html)
 	file.close()
-	GeneratePDF(name_doc)
+	path = "C:/Users/David/Downloads/Factura_Para_Revisar/media/company/"
+	GeneratePDF(name_doc,t.decodificar(str(invoice.last().empleoyee.company.documentIdentification)),path)
 	os.remove('template/pdfs/'+name_doc+'.html')
 
-	return FileResponse(open(name_doc+'.pdf','rb'),content_type='application/pdf')
+	return FileResponse(open(path+request.session['nit_company']+'/'+name_doc+'.pdf','rb'),content_type='application/pdf')
 
 
 

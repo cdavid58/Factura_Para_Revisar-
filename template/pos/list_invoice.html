@@ -68,7 +68,7 @@
 {% block script %}
 <script>
     function print_invoice_pos(pk){
-        window.open('http://localhost:8000/pos/GetPDF_POS/'+pk.replace('FE-',''),'Factura POS','width=auto,height=auto,scrollbars=NO');
+        window.open('{% url "Print_Invoice" %},'Factura POS','width=auto,height=auto,scrollbars=NO');
     }
     function credit_note(pk){
         $.ajax({

@@ -24,7 +24,6 @@ def storeInQueue(f):
 
 @storeInQueue
 def Invoice_Data(request):
-	print(request.session['nit_company'])
 	company = Company.objects.get(documentIdentification = t.codificar(str(request.session['nit_company'])))
 	_invoice = Invoice.objects.filter(company = company).distinct()
 	try:
@@ -50,7 +49,6 @@ def Invoice_Data(request):
 		]
 		return _data
 	except Exception as e:
-		print(e)
 		return []
 	
 
@@ -196,7 +194,6 @@ def Save_Invoice_FE(request):
 
 def Payment_Forms(request):
 	if request.is_ajax():
-		print(request.GET.get("pk"))
 		request.session['payment_form'] = request.GET.get("pk")
 		return HttpResponse(request.session['payment_form'])
 
@@ -217,7 +214,6 @@ def Send_Dian(request,pk):
 def Credit_Notes(request,number):
 	company = Company.objects.get(documentIdentification= t.codificar(str(request.session['nit_company'])))
 	invoice = Invoice.objects.filter(number = t.codificar(str(number)), company = company)
-	print('Hola')
 	Credit_Note(
 		invoice = invoice.last(),
 		company = company,
@@ -242,8 +238,6 @@ def NoteCreditProduct(request):
 		n = int(t.decodificar(str(inv.quanty))) + int(request.GET.get('quanty'))
 		inv.quanty = t.codificar(str(n))
 		inv.save()
-
-		print(request.GET.get('consecutive'),'Consecutive')
 		_i = Invoice.objects.filter(number = t.codificar(str(request.GET.get('consecutive'))),company = company)
 		if len(_i) > 1:
 			for j in Invoice.objects.get(number = t.codificar(str(request.GET.get('consecutive'))),code = t.codificar(str(request.GET.get('pk'))),company = company):
@@ -331,10 +325,11 @@ def GetPDF(request,pk):
 	file = open("template/pdfs/"+name_doc+".html",'w')
 	file.write(html)
 	file.close()
-	GeneratePDF(name_doc)
+	path = "C:/Users/David/Downloads/Factura_Para_Revisar/media/company/"
+	GeneratePDF(name_doc,t.decodificar(str(invoice.last().empleoyee.company.documentIdentification)),path)
 	os.remove('template/pdfs/'+name_doc+'.html')
 
-	return FileResponse(open(name_doc+'.pdf','rb'),content_type='application/pdf')
+	return FileResponse(open(path+request.session['nit_company']+'/'+name_doc+'.pdf','rb'),content_type='application/pdf')
 
 
 

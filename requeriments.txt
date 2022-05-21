@@ -4,3 +4,5 @@ pillow
 djangorestframework
 jinja2
 pdfkit
+pandas
+

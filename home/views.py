@@ -12,16 +12,20 @@ from django.utils.crypto import get_random_string
 from api.models import Token
 from .registration_request import Request
 from date import Count_Days
+import os,shutil
 
 t = Translator()
 intentos = 1
 
 def LogOut(request):
+	shutil.rmtree('C:/Users/David/Downloads/Factura_Para_Revisar/media/company/'+str(request.session['nit_company']))
 	del request.session['empleoyee_pk']
 	del request.session['logo_Company']
 	del request.session['name_company']
 	del request.session['nit_company']
 	del request.session['type_empleoyee']
+
+
 	return redirect('/')
 
 def Login(request):
@@ -136,7 +140,6 @@ def Index(request):
 	days = Count_Days(dates)
 	message_resolutions = ""
 	error_resolution = False
-	print(days,'Days Resolutions')
 	if int(days) <= 15:
 		message_resolutions = "La resolucion vence en "+str(days)
 		error_resolution = True
@@ -150,7 +153,6 @@ def Index(request):
 	days = Count_Days(dates)
 	message_certificate = ""
 	error_certificate = False
-	print(days,'Days Certificado')
 	if int(days) <= 15:
 		message_certificate = "El certificado digital vence en "+str(days)
 		error_certificate = True

@@ -227,6 +227,16 @@
         });
     });
 
+    $('#send_payroll').click(function(){
+         swal({   
+            title: "¡EXITOSO!",   
+            text: "La nomina se esta enviando a la DIAN, cuando termine el envio le estaremos avisando!\nQue tenga un buen dia!",
+            type: "success",  
+            timer: 3000,   
+            showConfirmButton: false 
+        });
+    });
+
     
 
 

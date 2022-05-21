@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,FileResponse
 from django.shortcuts import render
 from api.translator import Translator
 import time, threading, queue,json
@@ -11,6 +11,7 @@ from invoice.models import Consecutive_POS
 from datetime import date
 from date import Count_Days
 from inventory.models import Inventory,Discount_Inventory
+from from_number_to_letters import numero_a_letras
 
 t = Translator()
 my_queue = queue.Queue()
@@ -203,3 +204,75 @@ def List_Credit_Note_POS(request):
 
 
 	return render(request,'pos/credit_note_pos.html',{'invoice':_data})
+
+
+
+
+
+from jinja2 import Environment, FileSystemLoader
+from template.make_pdf import *
+import os
+
+def GetPDF_POS(request,pk):
+	invoice = POS.objects.filter(pk = pk)
+	
+	env = Environment(loader=FileSystemLoader("template"))
+	template = env.get_template("credit_note_sample.html")
+	name_doc = "FES-POS"+str(pk)
+	_data = [
+		{
+			'code':t.decodificar(str(i.code)),
+			"name":t.decodificar(str(i.description)),
+			"quanty":t.decodificar(str(i.quanty)),
+			"price":t.decodificar(str(i.price)),
+			'tax_value':i.Tax_Value(),
+			'ico':t.decodificar(str(i.ipo)),
+			'discount':i.Totals_Discount(),
+			'totals':i.Base_Product_WithOut_Discount()
+		}
+		for i in invoice
+	]
+	subtotal = 0
+	tax = 0
+	for i in invoice:
+		subtotal += i.Base_Product_WithOut_Discount()
+		tax += i.Tax_Value()
+	
+	_payment_form = Payment_Form_Invoice_POS.objects.get(pos = invoice.last())
+
+	data = {
+		'name_client':t.decodificar(str(invoice.last().client.name)),
+		"email_client":t.decodificar(str(invoice.last().client.email)),
+		"address_client":t.decodificar(str(invoice.last().client.address)),
+		'phone_client':t.decodificar(str(invoice.last().client.phone)),
+		"data": _data,
+		'subtotal_invoice':subtotal,
+		'tax':tax,
+		'total_invoice':subtotal + tax,
+		'title':name_doc,
+		'name_company':t.decodificar(str(invoice.last().empleoyee.company.business_name)),
+		'address_company':t.decodificar(str(invoice.last().empleoyee.company.address)),
+		'email_company':t.decodificar(str(invoice.last().empleoyee.company.email)),
+		'phone_company':t.decodificar(str(invoice.last().empleoyee.company.phone)),
+		'resolution_number':invoice.last().empleoyee.company.resolution_number,
+		'type_organization':invoice.last().empleoyee.company.type_organization.name,
+		'payment_form':_payment_form.payment_method_id.name,
+		'duration_measure':_payment_form.payment_due_date,
+		'date':t.decodificar(str(i.date)),
+		'total_letters': numero_a_letras(subtotal + tax).upper(),
+		'type_invoice':"Factura POS"
+	}
+
+	html = template.render(data)
+	file = open("template/pdfs/"+name_doc+".html",'w')
+	file.write(html)
+	file.close()
+	GeneratePDF(name_doc)
+	os.remove('template/pdfs/'+name_doc+'.html')
+
+	return FileResponse(open(name_doc+'.pdf','rb'),content_type='application/pdf')
+
+
+
+
+

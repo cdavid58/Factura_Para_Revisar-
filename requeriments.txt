@@ -2,3 +2,5 @@ django
 requests
 pillow
 djangorestframework
+jinja2
+pdfkit

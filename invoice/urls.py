@@ -13,4 +13,5 @@ urlpatterns=[
 		url(r'^Credit_Notes/(\d+)/$',Credit_Notes,name="Credit_Notes"),
 		url(r'^NoteCreditProduct/$',NoteCreditProduct,name="NoteCreditProduct"),
 		url(r'^List_Credit_Note/$',List_Credit_Note,name="List_Credit_Note"),
+		url(r'^GetPDF/(\d+)/$',GetPDF,name="GetPDF"),
 	]

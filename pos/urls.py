@@ -11,4 +11,5 @@ urlpatterns=[
 		url(r'^Print_Invoice/$',Print_Invoice,name="Print_Invoice"),
 		url(r'^Credit_Notes/$',Credit_Notes,name="Credit_Notes"),
 		url(r'^List_Credit_Note_POS/$',List_Credit_Note_POS,name="List_Credit_Note_POS"),
+		url(r'^GetPDF_POS/(\d)+/$',GetPDF_POS,name="GetPDF_POS"),
 	]

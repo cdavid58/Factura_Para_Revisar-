@@ -23,7 +23,8 @@
             {% if request.session.type_empleoyee != "Contador" %}
                 <li class="nav-small-cap m-t-10">--- Main Menu</li>
                 <li> <a href="{% url 'Index' %}" class="waves-effect"><i class="ti-dashboard p-r-10"></i> <span class="hide-menu">Tablero</span></a> </li>
-                <li> <a href="#" class="waves-effect"><i data-icon="&#xe009;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">Crear<span class="fa arrow"></span></span></a>
+                <li> 
+                    <a href="#" class="waves-effect"><i data-icon="&#xe009;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">Crear<span class="fa arrow"></span></span></a>
                     <ul class="nav nav-second-level">
                         <li> <a href="{% url 'Create_Invoice' %}">Fact. Electronica</a> </li>
                         <li> <a href="{% url 'Create_POS' %}">Fact. Pos</a> </li>
@@ -31,7 +32,8 @@
                         <li> <a href="javascript:void(0);">Documento Soporte</a></li>
                     </ul>
                 </li>
-                <li> <a href="#" class="waves-effect"><i data-icon="&#xe007;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">Doc. Generados<span class="fa arrow"></span></span></a>
+                <li> 
+                    <a href="#" class="waves-effect"><i data-icon="&#xe007;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">Doc. Generados<span class="fa arrow"></span></span></a>
                     <ul class="nav nav-second-level">
                         <li> <a href="{% url 'List_Invoice' %}">Fact. Electronica</a> </li>
                         <li> <a href="{% url 'List_Invoice_POS' %}">Fact. Pos</a> </li>
@@ -41,7 +43,6 @@
                         <li> <a href="javascript:void(0);">Documento Soporte</a></li>
                     </ul>
                 </li>
-
 
                 {% if request.session.type_empleoyee == "Administrador" %}
                     <li> <a href="{% url 'List_Empleoyee' %}" class="waves-effect"><i class="icon-people"></i> &nbsp; <span class="hide-menu">Empleados</span></a> </li>
@@ -56,7 +57,17 @@
                     </ul>
                 </li>
             {% endif %}
-            <li> <a href="#" class="waves-effect"><i data-icon="&#xe00b;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">Reportes<span class="fa arrow"></span></span></a>
+            {% if request.session.type_empleoyee == "Administrador" or request.session.type_empleoyee == "Contador" %}
+                <li> 
+                    <a href="#" class="waves-effect"><i data-icon="&#xe007;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">Nomina Electrónica<span class="fa arrow"></span></span></a>
+                    <ul class="nav nav-second-level">
+                        <li> <a href="{% url 'Update_Payroll_Document' %}">Cargar Nomina</a> </li>
+                        <li> <a href="{% url 'Recovery_Payroll' %}">Recuperar Nóminas</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+            <li> 
+                <a href="#" class="waves-effect"><i data-icon="&#xe00b;" class="linea-icon linea-basic fa-fw"></i> <span class="hide-menu">Reportes<span class="fa arrow"></span></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="javascript:void(0)" class="waves-effect">Facturación ELectrónica.
                         <span class="fa arrow"></span></a>

@@ -1,0 +1,91 @@
+{% extends '../base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title m-b-0">Nómina Electrónica</h3>
+            <!-- <p class="text-muted m-b-30">Data table example</p> -->
+            <div class="table-responsive">
+                <table id="myTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cédula de Ciudadania</th>
+                            <th>Salario Base</th>
+                            <th>Subsidio de Trans.</th>
+                            <th>Dias Laborados</th>
+                            <th>Total Nomina</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    	{% for i in data %}
+	                        <tr>
+	                            <td>{{i.name}}</td>
+	                            <td style="text-align: right;">{{i.documentI}}</td>
+	                            <td style="text-align: right;">{{i.salary|floatformat:-2}}</td>
+	                            <td style="text-align: right;">{{i.transportation_allowance|floatformat:-2}}</td>
+	                            <td style="text-align: right;">{{i.worked_days|floatformat:-2}}</td>
+	                            <td style="text-align: right;">{{i.total_payroll|floatformat:-2}}</td>
+	                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+        	<table>
+        		<tr>
+        			<td><h3>Total a pagar Nómina:</h3></td>
+        			<td>&nbsp;&nbsp;&nbsp;</td>
+        			<td width="20%"><h3>${{total_payroll|floatformat:-2}}</h3></td>
+        			<td class="ml-auto"><h5>{{letter}}</h5></td>
+        		</tr>
+        	</table>
+		</div>
+	</div>
+</div>
+
+<div class="row" style="padding:10px 1px 10px 1px !important; height: 50%;">
+    <div class="col-md-12 ml-auto col-12">
+        <div class="white-box text-center">
+            <button href="{% url 'Send_Payroll' %}" id="send_dian" style="border-radius: 20px;" class="btn btn-primary btn-block">Enviar Nómina a la DIAN</button>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive send_payroll" id="send_payroll"> 
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			function sleep(ms) {
+	            return new Promise(resolve => setTimeout(resolve, ms));
+	        }
+
+	        async function time_sleep() {
+	            for (let i = 0; i < 3; i++) {
+	                console.log(`Waiting ${i} seconds...`);
+	                await sleep(i * 1000);
+	            }
+	            $(location).attr('href','{% url "Index" %}');
+	        }
+			$("#send_dian").click(function(){
+				$.ajax({
+					data:{'click':true},
+					success:function(data){
+						$("#send_payroll").click()
+						time_sleep()
+					}
+				})
+			})
+		})
+	</script>
+{% endblock %}

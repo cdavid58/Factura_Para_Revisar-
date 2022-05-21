@@ -1,0 +1,26 @@
+{% extends '../base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <h3 class="box-title m-b-0">Nómina Electrónica </h3>
+            <p class="text-muted m-b-30">Suba su nomina</p>
+            <form action="#" class="dropzone" enctype="multipart/form-data" method="post">{% csrf_token %}
+                <div class="fallback">
+                    <input name="file" type="file" multiple />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 ml-auto col-12">
+        <div class="white-box text-center">
+            <a href="{% url 'Send_Payroll' %}" class="btn btn-primary">VER DETALLES DE NÓMINA</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

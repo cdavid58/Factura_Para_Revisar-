@@ -54,12 +54,15 @@ class Invoice(models.Model):
 	def Base_Product(self):
 		return float(t.decodificar(self.price))
 
+	def Totals_Discount(self):
+		return round(self.Base_Product() * (int(t.decodificar(str(self.discount))) / 100))
+
 	def Tax_Value(self):
 		tax =  (float(t.decodificar(str(self.tax))) * float(t.decodificar(str(self.quanty))))
 		return round( tax,2)
 
 	def Base_Product_WithOut_Discount(self):
-		return round( (self.Base_Product() - ( float(t.decodificar(self.discount)) * 100 )) * float(t.decodificar(str(self.quanty))) )
+		return round( (self.Base_Product() - ( float(t.decodificar(self.discount)) * 100 )) * float(t.decodificar(str(self.quanty))),2 )
 
 	def Totals(self):
 		return round(self.Base_Product_WithOut_Discount() + self.Tax_Value() + float(t.decodificar(self.ipo)))

@@ -34,6 +34,9 @@
                                         <a style="margin-left: 10px;" class="btn btn-success text-white" href="{% url 'Electronic_Invoice_Docment_POS' i.pk %}"> 
                                             VER
                                         </a>
+                                        <a style="margin-left: 10px;" class="btn btn-success text-white" href="{% url 'GetPDF_POS' i.pk %}" target="_blank"> 
+                                            PDF
+                                        </a>
                                     {% else %}
                                         <a class="btn btn-primary text-white" title="Imprimir" href="javascript:void(0);" onclick="print_invoice_pos('{{i.number}}');">
                                             <i class="fa fa-print"></i>
@@ -41,8 +44,14 @@
                                         <a style="margin-left: 10px;" class="btn btn-info text-white" id="{{i.pk}}" onclick="credit_note('{{i.pk}}');$('#'+this.id).css('display','none');"> 
                                             NC
                                         </a>
+                                        <a style="margin-left: 10px;" class="btn btn-success text-white" href="{% url 'GetPDF_POS' i.pk %}" target="_blank"> 
+                                            PDF
+                                        </a>
                                         <a style="margin-left: 10px;" class="btn btn-success text-white" href="{% url 'Electronic_Invoice_Docment_POS' i.pk %}"> 
                                             VER
+                                        </a>
+                                        <a style="margin-left: 10px;" class="btn btn-warning text-white" href="{% url 'Electronic_Invoice_Docment_POS' i.pk %}"> 
+                                            E-mail
                                         </a>
                                     {% endif %}
                                 </td>
@@ -59,7 +68,7 @@
 {% block script %}
 <script>
     function print_invoice_pos(pk){
-        window.open('{% url "Print_Invoice" %}','Factura POS','width=auto,height=auto,scrollbars=NO');
+        window.open('http://localhost:8000/pos/GetPDF_POS/'+pk.replace('FE-',''),'Factura POS','width=auto,height=auto,scrollbars=NO');
     }
     function credit_note(pk){
         $.ajax({

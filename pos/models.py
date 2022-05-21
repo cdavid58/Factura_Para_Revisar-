@@ -31,6 +31,9 @@ class POS(models.Model):
 	def Base_Product(self):
 		return float(t.decodificar(self.price))
 
+	def Totals_Discount(self):
+		return round(self.Base_Product() * (int(t.decodificar(str(self.discount))) / 100))
+
 	def Tax_Value(self):
 		tax =  (float(t.decodificar(str(self.tax))) * float(t.decodificar(str(self.quanty))))
 		return round( tax,2)

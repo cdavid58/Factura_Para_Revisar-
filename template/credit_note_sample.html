@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+  <title>Factura Electronica - {{title}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</title>
+  <style>
+  </style>
+<body style='font-family:Tahoma;font-size:12px;color: #333333;background-color:#FFFFFF;'>
+  <table align='center' border='0' cellpadding='0' cellspacing='0' style='height:842px; width:650px;font-size:12px;'>
+    <tr>
+      <td valign='top'>
+        <table width='100%' cellspacing='0' cellpadding='0'>
+          <tr>
+            <td valign='bottom' width='50%' height='50'>
+              <div align='left'><img src='https://www.inv24.com/components/Users/pics/50c86533af47b/thumbs/0.jpg' /></div><br /></td>
+            <td width='50%'>&nbsp;</td>
+          </tr>
+        </table>Cobrar a: <br/><br/>
+        <table width='100%' cellspacing='0' cellpadding='0'>
+          <tr style="height: 30px;">
+            <td valign='top' width='35%' style='font-size:12px;'>Razon Social:&nbsp;{{name_client}}<br />Email:&nbsp;{{email_client}}<br />Direccion:&nbsp;{{address_client}} <br/>Tlf:&nbsp;{{phone_client}}<br>
+            </td>
+            <td valign='top' width='35%'>
+            </td>
+            <td valign='top' width='30%' style='font-size:12px;'>Fecha de Generacion: {{date}}<br/> Fecha de Vencimiento: {{duration_measure}} <br/> Forma de Pago: {{payment_form}} <br/>
+            </td>
+          </tr>
+        </table>
+        <table width='100%' cellspacing='0' cellpadding='0' style="top: 10px;">
+          <tr style="height: 10px;">
+            
+          </tr>
+        </table>
+        <table width='100%' cellspacing='0' cellpadding='0' style="top: 10px;">
+          <tr style="height: 20px;">
+            <td valign='top' width='35%' style='font-size:12px;'>Cufe:<small>{{cufe}}</small>
+            </td>
+            <td valign='top' width='35%'>
+            </td>
+            <td valign='top' width='30%' style='font-size:12px;'>
+            </td>
+          </tr>
+        </table>
+        <table width='100%' height='40' cellspacing='0' cellpadding='0'>
+          <tr>
+            <td>
+              <div align='center' style='font-size: 14px;font-weight: bold;'>{{type_invoice}}&nbsp; # {{consecutive}} </div>
+            </td>
+          </tr>
+        </table>
+        <table width='100%' cellspacing='0' cellpadding='2' border='1' bordercolor='#CCCCCC'>
+          <tr>
+            <td width='35%' bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Descripcion </strong></td>
+            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Cant.</strong></td>
+            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Precio Unit.</strong></td>
+            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Valor IVA</strong></td>
+            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>ICO</strong></td>
+            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Descuento</strong></td>
+            <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Subtotal</strong></td>
+          </tr>
+          <tr style="display:none;">
+            <td colspan="*">
+              {% for i in data %}
+                <tr>
+                  <td valign='top' style='font-size:12px;'>{{i.name}}</td>
+                  <td valign='top' style='font-size:12px;text-align: right;'>{{i.quanty}} </td>
+                  <td valign='top' style='font-size:12px;text-align: right;'>{{i.price}}</td>
+                  <td valign='top' style='font-size:12px;text-align: right;'>{{i.tax_value}}</td>
+                  <td valign='top' style='font-size:12px;text-align: right;'>{{i.ico}}</td>
+                  <td valign='top' style='font-size:12px;text-align: right;'>{{i.discount}}</td>
+                  <td valign='top' style='font-size:12px;text-align: right;'>{{i.totals}}</td>
+                </tr>
+              {% endfor %}
+            </td>
+          </tr>
+        </table>
+        <table width='100%' cellspacing='0' cellpadding='2' border='0'>
+          <tr>
+            <td style='font-size:12px;width:50%;'><strong>{{total_letters}}&nbsp;PESOS</strong></td>
+            <td>
+              <table width='100%' cellspacing='0' cellpadding='2' border='0'>
+                <tr>
+                  <td align='right' style='font-size:12px;'>Subtotal</td>
+                  <td align='right' style='font-size:12px;'>${{subtotal_invoice}}
+                    <td>
+                </tr>
+                <tr>
+                  <td align='right' style='font-size:12px;'>IVA(19%)</td>
+                  <td align='right' style='font-size:12px;'>${{tax}}</td>
+                </tr>
+                <tr>
+
+                  <td align='right' style='font-size:12px;'><b>Total</b></td>
+                  <td align='right' style='font-size:12px;'><b>${{total_invoice}}</b></td>
+                </tr>
+              </table>
+              </td>
+          </tr>
+        </table>
+
+        <table width='100%' height='10'>
+          <tr>
+            <td style='font-size:12px;text-align:justify;'></td>
+          </tr>
+        </table>
+        <table width='100%' cellspacing='0' cellpadding='2'>
+          <tr>
+            <td width='33%' style='font-size:12px;' valign='top'><b>Observacion:</b><br/>
+              Para entregar el lunes a las 5:30pm
+            </td>
+          </tr>
+        </table>
+
+        <table width='100%' height='50'>
+          <tr>
+            <td style='font-size:12px;text-align:justify;'></td>
+          </tr>
+        </table>
+        <table width='100%' cellspacing='0' cellpadding='2'>
+          <tr>
+            <td width='33%' style='border-top:double medium #CCCCCC;font-size:12px;' valign='top'><b>{{name_company}}</b><br/>
+
+
+            </td>
+            <td width='33%' style='border-top:double medium #CCCCCC; font-size:12px;' align='center' valign='top'>
+              {{address_company}}<br /> {{email_company}} <br/> Phone: {{phone_company}}<br/>
+            </td>
+
+            <td valign='top' width='34%' style='border-top:double medium #CCCCCC;font-size:12px;' align='right'>Resolucion: 18764029034265<br/> {{type_organization}} <br/> <!-- [payment details] <br/> [payment details] <br/> -->
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

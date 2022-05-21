@@ -1,4 +1,4 @@
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,FileResponse
 from django.shortcuts import render,redirect
 from .models import *
 from api.translator import Translator
@@ -10,6 +10,7 @@ from datetime import date
 from api.SendInvoiceDian import send_invoice_dian
 from date import Count_Days
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from from_number_to_letters import numero_a_letras
 
 t = Translator()
 my_queue = queue.Queue()
@@ -23,6 +24,7 @@ def storeInQueue(f):
 
 @storeInQueue
 def Invoice_Data(request):
+	print(request.session['nit_company'])
 	company = Company.objects.get(documentIdentification = t.codificar(str(request.session['nit_company'])))
 	_invoice = Invoice.objects.filter(company = company).distinct()
 	try:
@@ -267,4 +269,83 @@ def List_Credit_Note(request):
 
 
 	return render(request,'fe/credit_note_fe.html',{'invoice':_data})
+
+
+from jinja2 import Environment, FileSystemLoader
+from template.make_pdf import *
+import os
+
+def GetPDF(request,pk):
+	invoice = Invoice.objects.filter(pk = pk)
+	
+	env = Environment(loader=FileSystemLoader("template"))
+	template = env.get_template("credit_note_sample.html")
+	name_doc = "FES-FE"+str(pk)
+	_data = [
+		{
+			'code':t.decodificar(str(i.code)),
+			"name":t.decodificar(str(i.description)),
+			"quanty":t.decodificar(str(i.quanty)),
+			"price":t.decodificar(str(i.price)),
+			'tax_value':i.Tax_Value(),
+			'ico':t.decodificar(str(i.ipo)),
+			'discount':i.Totals_Discount(),
+			'totals':i.Base_Product_WithOut_Discount()
+		}
+		for i in invoice
+	]
+	subtotal = 0
+	tax = 0
+	for i in invoice:
+		subtotal += i.Base_Product_WithOut_Discount()
+		tax += i.Tax_Value()
+	
+	_payment_form = Payment_Form_Invoice.objects.get(invoice = invoice.last())
+
+	data = {
+		'name_client':t.decodificar(str(invoice.last().client.name)),
+		"email_client":t.decodificar(str(invoice.last().client.email)),
+		"address_client":t.decodificar(str(invoice.last().client.address)),
+		'phone_client':t.decodificar(str(invoice.last().client.phone)),
+		"data": _data,
+		'cufe':'a7e53384eb9bb4251a19571450465d51809e0b7046101b87c4faef96b9bc904cf7f90035f444952dfd9f6084eeee2457433f3ade614712f42f80960b2fca43ff',
+		'subtotal_invoice':subtotal,
+		'tax':tax,
+		'total_invoice':subtotal + tax,
+		'title':name_doc,
+		'name_company':t.decodificar(str(invoice.last().empleoyee.company.business_name)),
+		'address_company':t.decodificar(str(invoice.last().empleoyee.company.address)),
+		'email_company':t.decodificar(str(invoice.last().empleoyee.company.email)),
+		'phone_company':t.decodificar(str(invoice.last().empleoyee.company.phone)),
+		'resolution_number':invoice.last().empleoyee.company.resolution_number,
+		'type_organization':invoice.last().empleoyee.company.type_organization.name,
+		'payment_form':str(_payment_form.payment_method_id.name).replace('é','e'),
+		'duration_measure':_payment_form.payment_due_date,
+		'date':t.decodificar(str(i.date)),
+		'total_letters': numero_a_letras(subtotal + tax).upper(),
+		'type_invoice':"Factura Electonica de venta",
+		'consecutive':t.decodificar(str(invoice.last().number))
+	}
+
+	html = template.render(data)
+	file = open("template/pdfs/"+name_doc+".html",'w')
+	file.write(html)
+	file.close()
+	GeneratePDF(name_doc)
+	os.remove('template/pdfs/'+name_doc+'.html')
+
+	return FileResponse(open(name_doc+'.pdf','rb'),content_type='application/pdf')
+
+
+
+
+
+
+
+
+
+
+
+
+
 

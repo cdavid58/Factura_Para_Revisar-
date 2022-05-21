@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,FileResponse
 from django.shortcuts import render,redirect
 from company.models import Company,Files_Company
 from seller.models import Seller
@@ -142,6 +142,7 @@ def Index(request):
 		error_resolution = True
 	if int(days) <= 0:
 		error_resolution = "expired"
+		
 
 	date_ = company.certificate_expiration_date
 	_date = date_.split('-')

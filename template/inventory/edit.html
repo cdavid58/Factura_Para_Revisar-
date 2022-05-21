@@ -1,0 +1,103 @@
+{% extends '../base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Inventario</h4> </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> 
+            <a href="{% url 'List_Inventory' %}" class="btn btn-success pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Listado de Inventario</a>
+            <a href="{% url 'Delete_Inventario' i.pk %}" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Eliminar</a>
+            
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3 class="box-title">Agregar Inventario</h3>
+                <form class="form-material form-horizontal" id="form" method="post">{% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="col-md-12" for="example-text">Código</span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="code" name="code" value="{{i.code}}" class="form-control code">
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-md-12" for="paydate">Descripción</span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="paydate" name="name" value="{{i.description}}" class="form-control mydatepicker">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="col-md-12" for="example-text">Precio de venta</span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="example-text" name="price" value="{{i.price}}" autofocus class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-md-12" for="paydate">IVA</span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="paydate" name="tax" value="{{i.tax}}" class="form-control mydatepicker">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="col-md-12" for="example-text">Cantidad Actual</span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="example-text" name="quanty" value="{{i.quanty}}" autofocus class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-sm-12">Categoria</label>
+                            <div class="col-sm-12">
+                                <select name="category" class="form-control">
+                                    <option>{{i.subcategories.category.name}}</option>
+                                    {% for j in c %}
+                                        {% if i.subcategories.category.name != j.name %}
+                                            <option>{{j.name}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info waves-effect waves-light m-r-10 save">Actualizar</button>
+                    <!-- <button type="reset" class="btn btn-inverse waves-effect waves-light re">Limpiar Campos</button> -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="update_success"> 
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function(){
+        $(".save").click(function(e){
+            e.preventDefault()
+            $.ajax({
+                data:$("#form").serialize(),
+                success:function(data){
+                    $("#update_success").click()
+                    // $(".re").click()
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

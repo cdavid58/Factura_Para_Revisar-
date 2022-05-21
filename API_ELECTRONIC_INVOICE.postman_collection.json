@@ -1,0 +1,466 @@
+{
+	"info": {
+		"_postman_id": "cc7c35b0-e0c9-4b2e-9093-2ec0871608f6",
+		"name": "API_ELECTRONIC_INVOICE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"item": [
+				{
+					"name": "Create_Company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type_document_identification_id\": 3,\r\n\t\"type_organization_id\": 2,\r\n\t\"type_regime_id\": 2,\r\n\t\"type_liability_id\": 7,\r\n    \"document_identification\":9918401,\r\n\t\"business_name\": \"Buggy\",\r\n\t\"merchant_registration\": \"0000000-00\",\r\n\t\"municipality_id\": 1,\r\n\t\"address\": \"CRA 21A NRO 11-25\",\r\n\t\"phone\": 3015700795,\r\n\t\"email\": \"buggy@gmail.com\",\r\n    \"certificate_generation_date\":\"2022-03-22\",\r\n    \"certificate_expiration_date\":\"2023-03-22\",\r\n    \"resolution_generation_date\":\"2022-04-26\",\r\n    \"resolution_expiration_date\":\"2023-04-26\",\r\n    \"user\":\"Jhonatan\",\r\n    \"resolution_number\":\"18760000001\",\r\n    \"prefix\":\"FE\",\r\n    \"cod_bars\": false,\r\n    \"payment\":800000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Company",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identification_number\": \"123546879\",\r\n    \"dv\": 1,\r\n    \"name\": \"CLIENTE GENERAL\",\r\n    \"phone\": \"0000000\",\r\n    \"address\": \"NO APLICA\",\r\n    \"email\": \"example@gmail.com\",\r\n    \"merchant_registration\": \"0000000-00\",\r\n    \"type_document_identification_id\": 6,\r\n    \"type_organization_id\": 1,\r\n    \"type_liability_id\": 7,\r\n    \"municipality_id\": 1,\r\n    \"type_regime_id\": 1,\r\n    \"company\":\"9918401\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Client",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Invoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payment_form\": {\r\n\t\t\"payment_form_id\": 1,\r\n\t\t\"payment_method_id\": 10,\r\n\t\t\"payment_due_date\": \"2022-03-27\",\r\n\t\t\"duration_measure\": \"0\"\r\n\t},\r\n    \"invoice_lines\":{\r\n        \"number\":152,\r\n        \"prefix\":\"FE\",\r\n        \"code\":50001,\r\n        \"quanty\":1,\r\n        \"description\":\"Teclado INTEL\",\r\n        \"price\":1000,\r\n        \"tax\":19,\r\n        \"notes\":\"Proof of electronic billing\",\r\n        \"date\":\"2022-03-27\",\r\n        \"ipo\":0,\r\n        \"discount\":0,\r\n        \"client\":900166483,\r\n        \"company\":20302968\r\n    }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Invoice_",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Invoice_"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Payroll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type_document_id\": 9,\r\n    \"establishment_name\": \"TORRE SOFTWARE\",\r\n    \"establishment_address\": \"CLL 11 NRO 21-73 BRR LA CABAÑA\",\r\n    \"establishment_phone\": \"3226563672\",\r\n    \"establishment_municipality\": 600,   \r\n    \"type_note\": 1,\r\n    \"period\":{\r\n        \"admision_date\": \"2021-01-01\",\r\n        \"settlement_start_date\": \"2021-03-01\",\r\n        \"settlement_end_date\": \"2021-03-15\",\r\n        \"worked_time\": 15,\r\n        \"issue_date\": \"2021-07-29\"\r\n    },\r\n\t\"worker_code\": \"41946692\",\r\n\t\"prefix\": \"NI\",\r\n\t\"consecutive\": 21,\r\n    \"payroll_period_id\": 4,\r\n    \"notes\": \"PRUEBA DE ENVIO DE NOMINA ELECTRONICA\",\r\n    \"worker\":20302968,\r\n    \"company\":20302968,\r\n    \"payment\": {\r\n\t\t\"payment_method_id\": 10,\r\n\t\t\"bank_name\": \"BANCO DAVIVIENDA\",\r\n\t\t\"account_type\": \"AHORROS\",\r\n\t\t\"account_number\": \"126070603280\"\r\n\t},\r\n    \"payment_dates\": [\r\n        {\r\n            \"payment_date\": \"2021-03-10\"\r\n        }\r\n    ],\r\n    \"accrued\": {\r\n\t\t\"worked_days\": 15,\r\n\t\t\"salary\": \"750000.00\",\r\n\t\t\"transportation_allowance\": \"109000.00\"\r\n    },\r\n    \"deductions\": {\r\n\t\t\"eps_type_law_deductions_id\": 1,\r\n\t\t\"eps_deduction\": \"60000.00\",\r\n\t\t\"pension_type_law_deductions_id\": 5,\r\n\t\t\"pension_deduction\": \"60000.00\"\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Payroll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Payroll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"All\",\r\n    \"company\":9918401\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Inventory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\":\"7702024066119\",\r\n\t\"name\":\"Nescafe\",\r\n\t\"quanty\":10,\r\n\t\"price\":100,\r\n\t\"tax\":19,\r\n\t\"initial_inventory\":10,\r\n    \"category\":\"All\",\r\n    \"company\":9918401\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Inventory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Empleoyee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documentIdentification\":159753456,\r\n    \"firstname\":\"Carlos\",\r\n    \"surname\":\"Del Aguila\",\r\n    \"second_surname\":\"\",\r\n    \"address\":\"Mi Casa\",\r\n    \"type_contract\":1,\r\n    \"payroll_type_document_identification\":7,\r\n    \"type_worker\":1,\r\n    \"phone\":3004609548,\r\n    \"email\":\"carlos_david753@hotmail.com\",\r\n    \"salary\":1500000,\r\n    \"company\":9918401,\r\n    \"user\":\"David\",\r\n    \"post\":\"Administrador\",\r\n    \"hiring_date\":\"2022-03-29\",\r\n    \"type\":\"Administrador\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Empleoyee",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Empleoyee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_POS_Invoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payment_form\": {\r\n\t\t\"payment_form_id\":2,\r\n\t\t\"payment_method_id\": 10,\r\n\t\t\"payment_due_date\": \"2022-03-22\",\r\n\t\t\"duration_measure\": \"0\"\r\n\t},\r\n    \"invoice_lines\":{\r\n        \"number\":54,\r\n        \"prefix\":\"FE\",\r\n        \"code\":50001,\r\n        \"quanty\":10,\r\n        \"description\":\"Teclado\",\r\n        \"price\":5200,\r\n        \"tax\":19,\r\n        \"notes\":\"Proof of electronic billing\",\r\n        \"date\":\"2022-03-22\",\r\n        \"ipo\":0,\r\n        \"discount\":0,\r\n        \"client\":900166483,\r\n        \"company\":20302968,\r\n        \"type\":\"POS\"\r\n\r\n    }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_POS_Invoice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_POS_Invoice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send_Invoice_DIAN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"number\": 152\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Send_Invoice_DIAN",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Send_Invoice_DIAN"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Seller",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"David\",\r\n    \"documentIdentification\":20302968,\r\n    \"phone\":\"3015700795\",\r\n    \"email\":\"cardeiguilou@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Create_Sellers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Create_Sellers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Delete_Company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/Delete_Company",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Delete_Company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_Seller",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Delete_Seller",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Delete_Seller"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identification_number\": \"12457\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Delete_Client",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Delete_Client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_All_Invoice_POS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"company\":9918401\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/Delete_All_Invoices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Delete_All_Invoices"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Select",
+			"item": [
+				{
+					"name": "GetAllCompany",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/GetAllCompanies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetAllCompanies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

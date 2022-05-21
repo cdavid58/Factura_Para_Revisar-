@@ -1,0 +1,94 @@
+{% extends '../base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">CARTERA FACTURA ELECTRONICA</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /row -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <p class="text-muted m-b-30">Exportar datos a Copia, CSV, Excel, PDF e Imprimir </p>
+                <div class="table-responsive">
+                    <table id="example23" class="display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Factura</th>
+                                <th>Cliente</th>
+                                <th>Fecha Vencimiento</th>
+                                <th>Monto</th>
+                                <th>Días de Mora</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in data %}
+                                <tr>
+                                    <td class="numero">{{i.code}}</td>
+                                    <td>{{i.client}}</td>
+                                    <td>{{i.date}}</td>
+                                    <td style="text-align: center;">{{i.price}}</td>
+                                    <td style="text-align: center;">{{i.mora}}</td>
+                                    <td>
+                                        <a href="{% url 'Electronic_Invoice_Docment_Wallet' i.code %}" class="btn btn-warning" style="margin-right: 10px;">Ver</a>
+                                        <a id="{{i.pk}}" type="button" href="javascript:void(0);" class="btn btn-danger">Pagar</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box col-3 ml-auto">
+                <div class="table-responsive">
+                    <table id="example23" class="display nowrap" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td><h4>Total:</h4></td>
+                                <td style="text-align:right;"><h4><span class="total">{{total}}</span></h4></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+
+{% endblock %}
+{% block script %}
+
+    <script>
+        $('a[type="button"]').click(function(){
+            $.ajax({
+                data:{'number':this.id},
+                success:function(data){
+                    console.log(data)
+                    $(".total").text(data)
+                }
+            })
+            $(this).closest('tr').remove();
+        })
+        $("input[type='search'").keypress(function(){
+            var valores = "";
+            $(this).parents("tr").find(".numero").each(function() {
+              valores += $(this).html() + "\n";
+            });
+            console.log(valores);
+            alert(valores);
+
+        })
+    </script>
+
+{% endblock %}

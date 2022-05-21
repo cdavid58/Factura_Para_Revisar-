@@ -1,0 +1,199 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Edit Patient</h4> </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <a href="{% url 'List_Empleoyee' %}" class="btn btn-success pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Todos los empleados</a>
+            <a href="{% url 'Profile_Empleoyee' i.pk %}" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Ver Perfil</a>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3 class="box-title">Información Básica</h3>
+                <form id="information_B" method="post" class="form-material form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">Nombre</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="example-text" name="name" class="form-control" placeholder="enter your name" value="{{i.name}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">Apellido</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="example-text" name="last_name" class="form-control" placeholder="enter your name" value="{{i.last_name}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="bdate">Fecha de contratación</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="date" id="bdate" name="hiring_date" class="form-control mydatepicker" placeholder="enter your birth date" value="{{i.hiring_date}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">Género</label>
+                        <div class="col-sm-12">
+                            <select class="form-control">
+                                <option>Seleccione Género</option>
+                                <option selected="selected">Masculino</option>
+                                <option>Femenino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">Imagen de perfil</label>
+                        <div class="col-sm-12">
+                            <img class="img-responsive" src="{{i.img}}" alt="" style="max-width:120px;">
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div> <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Select file</span> <span class="fileinput-exists">Cambiar</span>
+                                <input type="file" name="file"> </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a> </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">Activo</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input name="activate" type="checkbox" checked class="js-switch" data-color="#1bf213" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12">Descripción</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" style="resize: none;" rows="4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="information_basic" class="btn btn-info waves-effect waves-light m-r-10">Actualizar</button>
+                    <!-- <button type="reset" class="btn btn-inverse waves-effect waves-light">Cancelar</button> -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="white-box">
+                <h3 class="box-title">Información Adicional</h3>
+                <form class="form-material form-horizontal" id="informacion_adicional" method="post">{% csrf_token %}
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-email">E-mail</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="email" id="example-email" name="email" class="form-control" placeholder="enter your email" value="{{i.email}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-phone">Teléfono</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="example-phone" name="phone" class="form-control" placeholder="enter your phone"  value="{{i.phone}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="pwd">Contraseña</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="pwd" name="pwd" class="form-control" placeholder="enter your password" value="{{i.pwd}}">
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label class="col-md-12" for="cpwd">Confirm Password</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="password" id="cpwd" name="cpwd" class="form-control" placeholder="confirm your password">
+                        </div>
+                    </div> -->
+                    <button type="submit" class="btn btn-info waves-effect waves-light m-r-10 informacion_adicional">Actualizar</button>
+                    <!-- <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button> -->
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="white-box">
+                <h3 class="box-title">Información Laboral</h3>
+                <form class="form-material form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-12" for="furl">Salario</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="furl" name="furl" class="form-control" value="{{i.salary}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="turl">Twitter URL</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="turl" name="turl" class="form-control" value="http://www.twitter.com/username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="gurl">Google Plus URL</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="gurl" name="gurl" class="form-control" value="http://www.plus.google.com/username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="inurl">LinkedIN URL</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="inurl" name="inurl" class="form-control" value="http://www.linkedin.com/username">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
+                    <!-- <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</button> -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="update_success"> 
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+
+<script>
+    $(document).ready(function(){
+        let pk = '{{i.pk}}'
+        
+        $("#information_basic").click(function(e){
+            e.preventDefault()
+            var f = $("#information_B").serialize()
+            console.log(f)
+            $.ajax({
+                url:'{% url "Information_Basic" %}',
+                data:f,
+                success:function(data){
+                    console.log(data)
+                    $("#update_success").click()
+                }
+            })
+        })
+
+        $(".informacion_adicional").click(function(e){
+            e.preventDefault()
+            var f = $("#informacion_adicional").serialize()
+            $.ajax({
+                url : '{% url "Information_Persons" %}',
+                data:f,
+                success:function(data){
+                    $("#update_success").click()   
+                }
+            })
+        })
+    })
+</script>
+
+
+{% endblock %}

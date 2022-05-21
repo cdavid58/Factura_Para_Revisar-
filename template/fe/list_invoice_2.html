@@ -1,0 +1,193 @@
+{% extends '../base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3 class="box-title m-b-0">Facturación Electrónica</h3>
+                <!-- <p class="text-muted m-b-30">Data table example</p> -->
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Numero</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Cliente</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        	{% for i in invoice %}
+    	                        <tr>
+    	                            <td>{{i.number}}</td>
+    	                            <td>{{i.date}}</td>
+    	                            <td>{{i.client}}</td>
+    	                            <td>{{i.client}}</td>
+    	                            <td>{{i.state}}</td>
+                                    <td>{{i.totals}}</td>
+    	                            <td>
+                                        {% if i.state == "Sin enviar a la DIAN" %}
+                                              <a class="mytooltip btn btn-primary text-white" href="{% url 'Electronic_Invoice_Docment' i.pk %}"> 
+                                                Ver
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Ver Factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a> 
+                                            <a class="mytooltip btn btn-success text-white" href="{% url 'Send_Dian' i.pk %}"> 
+                                                DIAN
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2"><br>
+                                                            Envia factura
+                                                            a la DIAN
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a> 
+                                            <a class="mytooltip btn btn-danger text-white" href="javascript:void(0);" onclick="
+                                                $.ajax({
+                                                    data:{'pk':'{{i.pk}}'}
+                                                })
+                                                $(this).closest('tr').remove();
+                                             ">
+                                                <i class="fa fa-trash-o"></i>
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Eliminar factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                            
+                                        {% elif i.state == 'Se aplico nota crédito' %}
+                                            <a class="mytooltip btn btn-primary text-white" style="margin-right:5px;" href="{% url 'Electronic_Invoice_Docment' i.pk %}"> 
+                                                Ver
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Ver Factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a> 
+                                           <a class="mytooltip btn btn-info text-white" style="margin-right:5px;" href="javascript:void(0);"> 
+                                                PDF
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            PDF de la factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                            <a class="mytooltip btn btn-success text-white" href="javascript:void(0)"> 
+                                                Verificar
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Ver factura en la DIAN
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        {% elif i.state == 'Porcesado Correctamente' %}
+                                            <a class="mytooltip btn btn-primary text-white" style="margin-right:5px;" href="{% url 'Electronic_Invoice_Docment' i.pk %}"> 
+                                                Ver
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Ver Factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a> 
+                                            <a class="mytooltip btn btn-success text-white" style="margin-right:5px;" href="{% url 'Send_Dian' i.pk %}"> 
+                                                Verificar
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2"><br>
+                                                            Ver factura en la DIAN
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                            <a class="mytooltip btn btn-info text-white" style="margin-right:5px;" href="javascript:void(0);"> 
+                                                PDF
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            PDF de la factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                            <a class="mytooltip btn btn-info text-white" href="{% url 'Credit_Notes' i.pk %}"> 
+                                                NC
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Nota Crédito
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        {% elif i.state == 'Validación contiene errores en campos mandatorios' %}
+                                            <a class="mytooltip btn btn-primary text-white" style="margin-right:5px;" href="{% url 'Electronic_Invoice_Docment' i.pk %}"> 
+                                                Ver
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Ver Factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a> 
+                                            <a class="mytooltip btn btn-success text-white" style="margin-right:5px;" href="{% url 'Send_Dian' i.pk %}"> 
+                                                DIAN
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2"><br>
+                                                            Envia factura
+                                                            a la DIAN
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                            <a class="mytooltip btn btn-danger text-white" style="margin-right:5px;" href="javascript:void(0);" onclick="
+                                                $.ajax({
+                                                    data:{'pk':'{{i.pk}}'}
+                                                })
+                                                $(this).closest('tr').remove();
+                                             ">
+                                                <i class="fa fa-trash-o"></i>
+                                                <span class="tooltip-content5">
+                                                    <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2">
+                                                            Eliminar factura
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+    	                        </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+
+    
+
+{% endblock %}

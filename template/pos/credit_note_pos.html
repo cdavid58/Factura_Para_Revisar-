@@ -1,0 +1,65 @@
+{% extends '../base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title m-b-0">Nota Crédito - Factura Electrónica</h3>
+            <!-- <p class="text-muted m-b-30">Data table example</p> -->
+            <div class="table-responsive">
+                <table id="myTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    	{% for i in invoice %}
+	                        <tr>
+	                            <td>{{i.number}}</td>
+	                            <td>{{i.date}}</td>
+	                            <td>{{i.client}}</td>
+	                            <td>{{i.client}}</td>
+	                            <td>{{i.state}}</td>
+	                            <td>
+                                    <a class="btn btn-primary text-white" style="margin-right:5px;" href="{% url 'Electronic_Invoice_Docment' i.invoice %}"> 
+                                        Ver
+                                    </a> 
+                                    <a class="btn btn-success text-white" style="margin-right:5px;" href="{% url 'Send_Dian' i.pk %}"> 
+                                        Verificar
+                                    </a>
+                                    <a class="btn btn-info text-white" style="margin-right:5px;" href="javascript:void(0);"> 
+                                        PDF
+                                    </a>
+                                    <a class="btn btn-info text-white" href="{% url 'Credit_Notes' i.pk %}"> 
+                                        Email
+                                    </a>
+                                </td>
+	                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+
+<!-- <script>
+    $.ajax({
+        url:"{% url 'List_Invoice' %}",
+        data:{'Hola':'Hola'},
+        success:function(data){
+            console.log(data)
+        }
+    })
+</script> -->
+    
+
+{% endblock %}

@@ -1,0 +1,200 @@
+{% extends '../base.html' %}
+{% block content %}
+<style>
+    input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] { -moz-appearance:textfield; }
+</style>
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Agregar Cliente</h4> </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> 
+            <a href="{% url 'List_Client' %}" class="btn btn-primary pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Todos los clientes</a>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3 class="box-title">Información Básica</h3>
+                <form id="form" class="form-material form-horizontal" method="post">{% csrf_token %}
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">Nombre del cliente</span>
+                        </label>
+                        <div class="col-md-12">
+                            <input type="text" id="name" name="name" autofocus class="form-control" placeholder="Nombre del cliente" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">Dirección</span></label>
+                        <div class="col-md-12">
+                            <input type="text" id="example-text" name="address" class="form-control" placeholder="Dirección" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">Tipo de documento</label>
+                        <div class="col-sm-12">
+                            <select id="ti" name="type_document_identification_id" class="form-control">
+                                <option>Selecione</option>
+                                {% for i in td %}
+                                    <option value="{{i.pk}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-10">
+                            <label class="col-md-12" for="example-text">Número de documentación</span></label>
+                            <div class="col-md-12">
+                                <input type="number" id="example-text" name="identification_number" class="form-control" placeholder="Número de documentación" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="col-md-12" for="example-text">Digito de verficación</span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="number" id="firstname" name="dv" class="form-control" placeholder="Digito de Verficación" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">Registro Mercantil</span></label>
+                        <div class="col-md-12">
+                            <input type="text" id="example-text" name="merchant_registration" class="form-control" placeholder="Número de documentación" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">Teléfono</span></label>
+                        <div class="col-md-12">
+                            <input type="number" id="phone" name="phone" class="form-control" placeholder="Número de documentación" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">Tipo de organización</label>
+                        <div class="col-sm-12">
+                            <select id="ti" name="type_organization" class="form-control">
+                                <option>Selecione</option>
+                                {% for i in to %}
+                                    <option value="{{i.pk}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">Tipo de regimen</label>
+                        <div class="col-sm-12">
+                            <select id="ti" name="type_regime" class="form-control">
+                                <option>Selecione</option>
+                                {% for i in tr %}
+                                    <option value="{{i.pk}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12" for="example-text">E-mail</span></label>
+                        <div class="col-md-12">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Ingrese E-mail" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">Tipo de Municipio</label>
+                        <div class="col-sm-12">
+                            <select id="ti" name="municipality" class="form-control">
+                                <option>Selecione</option>
+                                {% for i in muni %}
+                                    <option value="{{i.pk}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info waves-effect waves-light m-r-10 register">Registrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="register_client"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="register_client_error"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="email_client_error"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="phone_client_error"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="data_client_error"> 
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function(){
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function time_sleep() {
+            for (let i = 0; i < 2; i++) {
+                console.log(`Waiting ${i} seconds...`);
+                await sleep(i * 1000);
+            }
+            $("#form")[0].reset()
+            $("#name").focus()
+        }
+        $(".register").click(function(e){
+            e.preventDefault()
+            $.ajax({
+                data:$("#form").serialize(),
+                success:function(data){
+                    console.log(data)
+                    if(data == "Successfully registered customer"){
+                        $("#register_client").click()
+                        time_sleep()
+                    }
+                    else if(data == "The email is invalid"){
+                        $("#email_client_error").click()
+                    }
+                    else if(data == "The phone is invalid"){
+                        $("#phone_client_error").click()
+                    }
+                    else if(data == "The customer data is not valid"){
+                        $("#data_client_error").click()
+                    }
+                    
+                    else{
+                        $("#register_client_error").click()
+                    }
+                }
+            })
+
+        })
+    })
+</script>
+{% endblock %}

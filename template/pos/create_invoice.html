@@ -1,0 +1,418 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] { -moz-appearance:textfield; }
+</style>
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Facturación POS</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <h4 class="pull-right" style="text-decoration: none;color: black;">Número #{{ce}}</h4>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- .row -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 class="m-t-30">Cliente</h5>
+                            <select id="client" class="form-control select2 client">
+                                <option value="00">Cliente General</option>
+                                {% for i in client %}
+                                    {% if i.name != "CLIENTE GENERAL" %}
+                                        <option value="{{i.code}}">{{i.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                    </div>
+                    <div class="col-md-2">
+                        <h5 class="m-t-30">Forma de Pago</h5>
+                        <select id="pf" class="form-control select2 pf">
+                            <option value="00">Seleccione</option>
+                            {% for i in pf %}
+                                <option value="{{i.id}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div id="fecha" class="col-md-4" style="display: none;">
+                        <h5 class="m-t-30">Fecha de Vencimiento</h5>
+                        <input class="form-control vence" type="date" id="example-date-input">
+                    </div>
+                    <div id="dias_vence_data" class="col-md-1">
+                        <h5 class="m-t-30">STOCK</h5>
+                        <input class="form-control stock" type="text" disabled id="example-date-input">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 class="m-t-30">Producto</h5>
+                        {% if cod_bars %}
+                            <input placeholder="0" class="form-control products_" type="number" id="products_" autofocus>
+                        {% else %}
+                            <select id="products_" class="form-control select2 products_">
+                                <option value="00">Seleccione un producto</option>
+                                {% for i in inventory %}
+                                    <option value="{{i.code}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <h5 class="m-t-30">Cantidad</h5>
+                        <input style="width:30%;" placeholder="0" class="form-control quanty" type="number" id="example-text-input">
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <!-- <p class="text-muted m-b-30">Data table example</p> -->
+                <div class="table-responsive">
+                    <table id='example-table' class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Costo</th>
+                                <th>Cantidad</th>
+                                <th>Iva</th>
+                                <th>Desc.</th>
+                                <th>SubTotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pather">
+                                
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-10"></div>
+            <div class="white-box col-3 ml-auto">
+                <table id='example-table' class="table table-striped col-2">
+                    <tbody>
+                          <tr>
+                              <td>SubTotal:</td>
+                              <td style="text-align: right;"><span id="SubTotal_Product">$ &nbsp;0</span></td>
+                          </tr>  
+                          <tr>
+                              <td>Impuestos:</td>
+                              <td style="text-align: right;"><span id="tax_product">$ &nbsp;0</span></td>
+                          </tr>  
+                          <tr>
+                              <td>Total:</td>
+                              <td style="text-align: right;"><span id="Totals_Product">$ &nbsp;0</span></td>
+                          </tr>  
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div>
+            <button type="button" class="btn btn-primary order">Facturar</button>
+        </div>
+    </div>
+
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img img" id="sa-pos"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="client_select"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="fp_select"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img" id="error_invoice"> 
+    </div>
+</div>
+
+<div class="col-lg-4 col-xs-12" hidden>
+    <div class="white-box">
+        <img src="" alt="alert" class="img-responsive model_img error_agotado" id="error_agotado"> 
+    </div>
+</div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="{% static 'jquery.tabletojson.min.js' %}"></script>
+<script>
+        let pf = 0
+        
+        $(".vence").change(function(){
+            var day1 = new Date(); 
+            var day2 = new Date($(".vence").val());
+            var difference= Math.abs(day2-day1);
+            days = difference/(1000 * 3600 * 24)
+
+            var days_vence = Math.round(days)
+
+            var fecha1 = moment(day1);
+            var fecha2 = moment(day2);
+
+            console.log(fecha2.diff(fecha1, 'days'), ' dias de diferencia');
+
+
+            $.ajax({
+                url:'{% url "Vence" %}',
+                data:{
+                    'date': $(".vence").val(),
+                    'days': days_vence
+                },success:function(data){
+                    // $("#vences").val(days_vence)s
+                }
+            })
+        })
+
+        $(".pf").change(function(){
+            if($("#pf").val() != "00"){
+                pf = $("#pf").val()
+                if($("#pf").val() == 2){
+                    $("#fecha").css('display','block')
+                }
+                else{
+                    $("#fecha").css('display','none')   
+                }
+                $.ajax({
+                    url:'{% url "Payment_Forms_POS" %}',
+                    data:{'pk':$("#pf").val()},
+                    success:function(data){
+                        
+                    }
+                })
+            }
+        })
+        $(".client").change(function(){
+            if($("#client").val() != "00"){
+                client = $("#client").val()
+                $.ajax({
+                    data:{'pk':$("#client").val()},
+                    success:function(data){
+                        console.log(data)
+                    }
+                })
+            }
+        })
+        let p;
+        let subtotal;
+
+
+        let Subtotal_invoice = 0;
+        let Tax_invoice = 0;
+        let Totals_invoice = 0;
+        let json = []        
+
+        function Add_Prodcut(p){
+            console.log($(".quanty").val())
+            if($(".stock").val() == '0'){
+                console.log("Producto Agotado")
+                $(".error_agotado").click()
+                $(".quanty").val("")
+                return false
+            }
+            if(valida(p['code'],p['cost'],p['tax_value'],$(".quanty").val())){
+                console.log("Existo")
+            }
+            else{
+                subtotal = parseFloat(p['cost']) * parseFloat($(".quanty").val())
+                    $("#pather").append(`
+                                <tr id="${p['code']}">
+                                    <td id="numero">${p['code']}</td>
+                                    <td>${p['name']}</td>
+                                    <td id="costo">${p['cost']}</td>
+                                    <td id="quanty">${$(".quanty").val()}</td>
+                                    <td id="tax">${p['tax_value']}</td>
+                                    <td>${p['discount']}</td>
+                                    <td id="subtotal">${subtotal}</td>
+                                    <td>
+                                       <button id="${p['code']}" name="elimina" class="btn btn-default elimina" style="color:black;">
+                                       <i class="fa fa-trash-o"></i></button>
+                                    </td>
+                                </tr>
+                            `)
+                    if('{{cod_bars}}' == 'True'){
+                        $("#products_").val("")
+                        $("#products_").focus()
+                    }
+                Subtotal_invoice = Subtotal_invoice + subtotal
+                tax = parseFloat(p['tax_value']) * parseFloat($(".quanty").val())
+                Tax_invoice = Tax_invoice + tax
+                Totals_invoice = Subtotal_invoice + Tax_invoice
+                $("#SubTotal_Product").text(Subtotal_invoice)
+                $("#tax_product").text(Tax_invoice)
+                $("#Totals_Product").text(Totals_invoice)
+                p['quanty'] = $(".quanty").val()
+                $(".quanty").val("")
+                json.push(p)
+            }
+
+        }
+
+        $(".products_").change(function(){
+            if($(".products_").val() != "00"){
+                $.ajax({
+                    url :"{% url 'GetProducts' %}",
+                    data:{'pk':$("#products_").val()},
+                    success:function(data){
+                        if(data == "Error"){
+                            $(".quanty").val("")
+                            $("#products_").val("")
+                            $("#products_").focus()
+                            alert("El producto que busca no existe")
+                        }
+                        else{
+                            p = JSON.parse(data)[0]
+                            console.log(p)
+                            $(".stock").val(p['quanty'])
+                            $(".stock").css('background',"yellow")
+                            $(".stock").css('color',"black")
+                            $(".stock").css('font-weight','bold')
+                            $(".stock").css('text-align','center')
+                            $(".quanty").focus()
+                        }
+                    }
+                })
+            }
+        })
+        $(".quanty").keypress(function(e){
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if(code==13){
+                Add_Prodcut(p)
+            }
+        })
+
+        function tableToJSON(table) {
+          var obj = {};
+          var row, rows = table.rows;
+          for (var i=0, iLen=rows.length; i<iLen; i++) {
+            row = rows[i];
+            obj[row.cells[0].textContent] = row.cells[1].textContent
+          }
+          return JSON.stringify(obj);
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function time_sleep() {
+            for (let i = 0; i < 2; i++) {
+                console.log(`Waiting ${i} seconds...`);
+                await sleep(i * 1000);
+            }
+            location.reload(true)
+        }
+
+        function Add_JSON(){
+            var table = $('#example-table').tableToJSON();
+            $.ajax({
+                url: '{% url "Save_Invoice_Pos" %}',
+                data: JSON.stringify(table),
+                success:function(data){
+                    if(data == 'True'){
+                        $(".img").click()
+                        time_sleep()
+                    }else{
+                        $("#error_invoice").click()
+                    }
+                }
+            })
+            
+        }
+
+        $(".order").click(function(){
+            if(pf != 0){
+                Add_JSON()
+            }
+            else if(pf == 0){
+                $("#fp_select").click()
+            }
+        })
+        
+        // $(this).closest('tr').remove();
+        $(document).on('click','button[name="elimina"]',function(){
+            var id = this.id
+            var filas = $("#pather").find("tr");
+            var resultado = "";
+            for(i=0; i<filas.length; i++){
+                var celdas = $(filas[i]).find("td");
+                if($(celdas[0]).text() == id){
+                    var sub_less = parseFloat($(celdas[6]).text())
+                    var tax_less = parseFloat($(celdas[4]).text()) * parseFloat($(celdas[3]).text())
+                    console.log(tax_less)
+                    Subtotal_invoice = Subtotal_invoice - sub_less
+                    Tax_invoice = Tax_invoice - tax_less
+                    Totals_invoice = Subtotal_invoice + Tax_invoice
+                    $("#SubTotal_Product").text(Subtotal_invoice)
+                    $("#tax_product").text(Tax_invoice)
+                    $("#Totals_Product").text(Totals_invoice)
+                    $(this).closest('tr').remove();
+                }
+                else
+                {
+                    console.log("No existo")
+                    console.log($(celdas[0]).text())
+                    console.log(id)
+                }
+            }
+            
+        })
+
+        function valida(value,cost,tax,quanty){
+            var filas = $("#pather").find("tr");
+            var resultado = "";
+            for(i=0; i<filas.length; i++){
+                var celdas = $(filas[i]).find("td");
+                if($(celdas[0]).text() == value){
+                    var quan = $(celdas[3]).text()
+                    var sub = $(celdas[6]).text()
+                    var s_quanty = parseInt(quan) + parseInt(quanty)
+                    var s_subtotal = cost * s_quanty
+                    $(celdas[3]).text(s_quanty)
+                    $(celdas[6]).text(s_subtotal)
+                    Subtotal_invoice = Subtotal_invoice + cost
+                    $("#SubTotal_Product").text(Subtotal_invoice.toFixed(2))
+                    Tax_invoice = Tax_invoice + tax
+                    $("#tax_product").text(Tax_invoice.toFixed(2))
+                    Totals_invoice = Subtotal_invoice + Tax_invoice 
+                    $("#Totals_Product").text(Totals_invoice.toFixed(2))
+                    $(".quanty").val("")
+                    $(".quanty").focus()
+                    return true
+                }
+            }
+            return false
+
+        }
+</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends '../base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">CARTERA FACTURA ELECTRONICA</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /row -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3 class="box-title m-b-0">Data Export</h3>
+                <p class="text-muted m-b-30">Export data to Copy, CSV, Excel, PDF & Print</p>
+                <div class="table-responsive">
+                    <table id="example23" class="display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Factura</th>
+                                <th>Cliente</th>
+                                <th>Fecha Vencimiento</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>Días de Mora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in data %}
+                                <tr>
+                                    <td>{{i.code}}</td>
+                                    <td>{{i.client}}</td>
+                                    <td>{{i.date}}</td>
+                                    <td style="text-align: center;">{{i.price}}</td>
+                                    <td>{{i.state}}</td>
+                                    <td style="text-align: center;">{{i.days_past_due}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+
+{% endblock %}
+{% block script %}
+
+    <script>
+        $(document).ready(function(){
+            $('a[type="button"]').click(function(){
+                $.ajax({
+                    data:{'number':this.id},
+                    success:function(data){
+                        console.log(data)
+                    }
+                })
+            })
+        })
+    </script>
+
+{% endblock %}

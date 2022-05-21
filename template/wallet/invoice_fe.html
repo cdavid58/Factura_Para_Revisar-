@@ -1,0 +1,101 @@
+{% extends '../base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Factura Electrónia</h4> </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <a href="{% url 'Wallet_Elec' %}" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Ver Cartera</a>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h3><b>Factura Electrónica de venta</b> <span class="pull-right">#{{number_invoice}}</span></h3>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pull-left">
+                            <address>
+                                <h3>De</h3>
+                                <h3> &nbsp;<b class="text-danger">{{company.name}}</b></h3>
+                                <p class="text-muted m-l-5"> Dirección:&nbsp;&nbsp; {{company.address}},
+                                    <br/>Teléfono:&nbsp;&nbsp; {{company.phone}},
+                                    <br/>E-mail:&nbsp;&nbsp; {{company.email}}</p>
+                                <p class="m-t-30"><b>Forma de Pago : </b>{{pf.payment_form_id.name}}</p>
+                                {% if pf.payment_form_id.name != 'Contado' %}
+                                    <p class="m-t-5"><b>Fecha de vencimiento : </b>{{data_pf.payment_due_date}}</p>
+                                {% endif %}
+                            </address>
+                        </div>
+                        <div class="pull-right text-right">
+                            <address>
+                                <h3>Para</h3>
+                                <h4 class="font-bold">{{client.name}}</h4>
+                                <p class="text-muted m-l-30">{{client.address}},
+                                    <br/> {{client.phone}},
+                                    <br/> {{client.email}}</p>
+
+                                <p class="m-t-30"><b>Fecha de Generación :</b> <i class="fa fa-calendar"></i> {{date.fg}}</p>
+                                {% if pf.payment_form_id.name != 'Contado' %}
+                                    <p class="m-t-10"><b>Días de Vencimiento : </b>{{data_pf.duration_measure}}</p>
+                                {% endif %}
+                            </address>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="table-responsive m-t-40">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th>Descripción</th>
+                                        <th class="text-right">Cantidad</th>
+                                        <th class="text-right">Costo</th>
+                                        <th class="text-right">VAL. IVA</th>
+                                        <th class="text-right">ICO</th>
+                                        <th class="text-right">Descuento</th>
+                                        <th class="text-right">SubTotal</th>
+                                        <th class="text-right">Neto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in invoice %}
+                                        <tr>
+                                            <td class="text-center">{{i.code}}</td>
+                                            <td>{{i.description}}</td>
+                                            <td class="text-right">{{i.quanty}}</td>
+                                            <td class="text-right">${{i.price}}</td>
+                                            <td class="text-right">${{i.tax_value}}</td>
+                                            <td class="text-right">${{i.ICO}}</td>
+                                            <td class="text-right">${{i.discount}}</td>
+                                            <td class="text-right">${{i.subtotal}}</td>
+                                            <td class="text-right">${{i.totals}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="pull-right m-t-30 text-right">
+                            <p>Sub - Total: ${{subtotal}}</p>
+                            <p>Impuesto : ${{tax}} </p>
+                            <hr>
+                            <h3><b>Total :</b> ${{totals}}</h3> </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="text-right">
+                            <!-- <button class="btn btn-danger" type="submit"> Proceed to payment </button> -->
+                            <!-- <button onClick="javascript:window.print();" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .row -->
+    <!-- /.row -->
+</div>
+{% endblock %}
